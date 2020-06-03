@@ -1,0 +1,26 @@
+.fade-out {
+    animation: fadeOut ease 1s;
+  }
+  @keyframes fadeOut {
+    0% {
+      opacity:0.8;
+      transform: scale(0.7);
+    }
+    100% {
+      opacity:0;
+      transform: scale(1);
+    }
+  }
+
+.msgPoP {
+    z-index: 10;
+    width: 30%;
+    height: 30%;
+    position: 'relative';
+    opacity: 1;
+    margin: 0 auto;
+    font-size: larger;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: white;
+    background-color: lightgray;
+  }
