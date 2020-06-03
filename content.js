@@ -21,7 +21,9 @@ div.style.alignItems = 'center'
 
 
 window.addEventListener('load', () => {
-
+    //unfocus on load
+    if(document.activeElement.toString() == '[object HTMLButtonElement]') 
+        document.activeElement.blur();
     // unfocus buttons after clicking
     document.addEventListener('click', function(e) { if(document.activeElement.toString() == '[object HTMLButtonElement]'){ document.activeElement.blur(); } })
     let video = document.getElementsByTagName('video')[0]
