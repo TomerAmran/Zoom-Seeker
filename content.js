@@ -38,16 +38,34 @@ window.addEventListener('load', () => {
 
     //put location of video
     // let url = location.href;
-    setTimeout(()=>{
-        chrome.storage.sync.get('url', 
-    (time)=>{
-        console.log(time.url);
-        let video = document.getElementsByTagName('video')[0];
-        if (time != undefined) video.currentTime = time.url;
-        video.play; video.pause;
+    chrome.storage.sync.get('urlmap', 
+        (res)=>{
+        let urlmap = res.urlmap;    
+        if (urlmap === undefined) {
+            let map = new Map();
+            console.log(map);
+            chrome.storage.sync.set({urlmap: map});
+        }
+        else{
+            console.log(res);
+            let time = urlmap.get(location.href);
+            if (time !== undefined){
+                let video = document.getElementsByTagName('video')[0];
+                video.currentTime = time;
+            }
+        }
+        let save = ()=>{
+            console.log('save time');
+            urlmap.set(location.href,time);
+            chrome.storage.sync.set({urlmap: urlmap});
+            setTimeout(save,6000);
+        }
+        setTimeout(save,6000)
     }
     );
-    },1000)
+
+
+
     foo = ()=> {
         console.log('hey')
         let url = location.href;
