@@ -21,6 +21,8 @@ div.style.alignItems = 'center'
 
 
 window.addEventListener('load', () => {
+    //test 
+
     //unfocus on load
     if(document.activeElement.toString() == '[object HTMLButtonElement]') 
         document.activeElement.blur();
@@ -33,6 +35,31 @@ window.addEventListener('load', () => {
     let buttons = document.getElementsByTagName('button')
     let play = document.getElementsByClassName('vjs-play-control')[0]
     video.parentNode.insertBefore(div,video.parentNode.firstChild);
+
+    //put location of video
+    // let url = location.href;
+    setTimeout(()=>{
+        chrome.storage.sync.get('url', 
+    (time)=>{
+        console.log(time.url);
+        let video = document.getElementsByTagName('video')[0];
+        if (time != undefined) video.currentTime = time.url;
+        video.play; video.pause;
+    }
+    );
+    },1000)
+    foo = ()=> {
+        console.log('hey')
+        let url = location.href;
+        let video = document.getElementsByTagName('video')[0];
+        chrome.storage.sync.set({url: video.currentTime});
+        setTimeout(foo,6000);
+    }
+
+    setTimeout(foo,6000)
+
+
+
 
     document.getElementsByTagName('body')[0].addEventListener('keydown', (ev)=> 
     {
