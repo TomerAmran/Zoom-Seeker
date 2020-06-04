@@ -36,6 +36,8 @@ window.addEventListener('load', () => {
     let play = document.getElementsByClassName('vjs-play-control')[0]
     video.parentNode.insertBefore(div,video.parentNode.firstChild);
 
+    // chrome.storage.sync.clear();
+    
     const locationManager = (video) => {
         chrome.storage.sync.get('urls', 
         (res)=>{
