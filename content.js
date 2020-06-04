@@ -36,7 +36,7 @@ window.addEventListener('load', () => {
     let play = document.getElementsByClassName('vjs-play-control')[0]
     video.parentNode.insertBefore(div,video.parentNode.firstChild);
 
-    video.addEventListener('loadeddata',()=>{
+    const locationManager = (video) => {
         chrome.storage.sync.get('urls', 
         (res)=>{
             console.log(res.urls);
@@ -60,13 +60,11 @@ window.addEventListener('load', () => {
                 dataIndex = urls.length-1;
             }  
             console.log(`dataIndex after fix: ${dataIndex}`)
-            let video = document.getElementsByTagName('video')[0];
             video.currentTime = urls[dataIndex][1];    
             let save = (dataIndex,urls)=>{
                 console.log(urls);
                 console.log(dataIndex);  
                 console.log(urls[dataIndex][1])  
-                let video = document.getElementsByTagName('video')[0];
                 urls[dataIndex][1] = video.currentTime;
                 chrome.storage.sync.set({urls: urls});
                 setTimeout(()=> save(dataIndex,urls),6000);
@@ -75,8 +73,10 @@ window.addEventListener('load', () => {
         }
         );
 
-    })
+    } 
 
+
+    video.addEventListener('loadeddata',()=>locationManager(video));
 
     document.getElementsByTagName('body')[0].addEventListener('keydown', (ev)=> 
     {
