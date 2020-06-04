@@ -36,47 +36,46 @@ window.addEventListener('load', () => {
     let play = document.getElementsByClassName('vjs-play-control')[0]
     video.parentNode.insertBefore(div,video.parentNode.firstChild);
 
-    //put location of video
-    // let url = location.href;
-    chrome.storage.sync.get('urlmap', 
+    video.addEventListener('loadeddata',()=>{
+        chrome.storage.sync.get('urls', 
         (res)=>{
-        let urlmap = res.urlmap;    
-        if (urlmap === undefined) {
-            let map = new Map();
-            console.log(map);
-            chrome.storage.sync.set({urlmap: map});
-        }
-        else{
-            console.log(res);
-            let time = urlmap.get(location.href);
-            if (time !== undefined){
-                let video = document.getElementsByTagName('video')[0];
-                video.currentTime = time;
+            console.log(res.urls);
+            //init urls
+            let dataIndex;
+            let thisUrl =location.href;
+            let urls = res.urls;    
+            if (urls === undefined) {
+                console.log('urls is undefined')
+                    urls = [[thisUrl,0]]
+                }
+            //search for the right index of data
+            for (let i = 0 ; i< urls.length; i++){
+                if (urls[i][0] == thisUrl)
+                    dataIndex = i;
             }
+            console.log(`dataIndex after search: ${dataIndex}`)
+            if (dataIndex == undefined){
+                urls = urls.concat([[thisUrl,0]]);
+                // chrome.storage.sync.set({urls: urls});
+                dataIndex = urls.length-1;
+            }  
+            console.log(`dataIndex after fix: ${dataIndex}`)
+            let video = document.getElementsByTagName('video')[0];
+            video.currentTime = urls[dataIndex][1];    
+            let save = (dataIndex,urls)=>{
+                console.log(urls);
+                console.log(dataIndex);  
+                console.log(urls[dataIndex][1])  
+                let video = document.getElementsByTagName('video')[0];
+                urls[dataIndex][1] = video.currentTime;
+                chrome.storage.sync.set({urls: urls});
+                setTimeout(()=> save(dataIndex,urls),6000);
+            }
+            setTimeout(()=>save(dataIndex,urls),6000)
         }
-        let save = ()=>{
-            console.log('save time');
-            urlmap.set(location.href,time);
-            chrome.storage.sync.set({urlmap: urlmap});
-            setTimeout(save,6000);
-        }
-        setTimeout(save,6000)
-    }
-    );
+        );
 
-
-
-    foo = ()=> {
-        console.log('hey')
-        let url = location.href;
-        let video = document.getElementsByTagName('video')[0];
-        chrome.storage.sync.set({url: video.currentTime});
-        setTimeout(foo,6000);
-    }
-
-    setTimeout(foo,6000)
-
-
+    })
 
 
     document.getElementsByTagName('body')[0].addEventListener('keydown', (ev)=> 
