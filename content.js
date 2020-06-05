@@ -57,9 +57,11 @@ window.addEventListener('load', () => {
             }
             console.log(`dataIndex after search: ${dataIndex}`)
             if (dataIndex == undefined){
-                urls = urls.concat([[thisUrl,0]]);
+                urls = [[thisUrl,0]].concat(urls);
                 // chrome.storage.sync.set({urls: urls});
-                dataIndex = urls.length-1;
+                dataIndex = 0;
+                if (urls.length > 50)
+                    urls = urls.slice(0,30);
             }  
             console.log(`dataIndex after fix: ${dataIndex}`)
             video.currentTime = urls[dataIndex][1];    
