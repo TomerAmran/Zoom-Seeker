@@ -27,11 +27,11 @@ window.addEventListener('load', () => {
     if(document.activeElement.toString() == '[object HTMLButtonElement]') 
         document.activeElement.blur();
     // unfocus buttons after clicking
-    document.addEventListener('click', function(e) { 
-        if(document.activeElement.toString() == '[object HTMLButtonElement]')
-            { document.activeElement.blur(); }
+    // document.addEventListener('click', function(e) { 
+    //     if(document.activeElement.toString() == '[object HTMLButtonElement]')
+    //         { document.activeElement.blur(); }
             
-         })
+    //      })
     let video = document.getElementsByTagName('video')[0]
     if (video == undefined) throw new Error('There is no video element.\n Its OK, aborting code.')
     video.parentNode.style.display = 'flex'
@@ -75,14 +75,16 @@ window.addEventListener('load', () => {
                 console.log(urls[dataIndex][1])  
                 urls[dataIndex][1] = video.currentTime;
                 chrome.storage.sync.set({urls: urls});
-                setTimeout(()=> save(dataIndex,urls),6000);
+                setTimeout(()=> save(dataIndex,urls),10000);
             }
             document.addEventListener('click',()=> {
                 console.log('saved by click');
                 urls[dataIndex][1] = video.currentTime;
-                chrome.storage.sync.set({urls: urls});
+                chrome.storage.sync.set({urls: urls});  
+                if(document.activeElement.toString() == '[object HTMLButtonElement]')
+                    document.activeElement.blur();
             })
-            setTimeout(()=>save(dataIndex,urls),6000)
+            setTimeout(()=>save(dataIndex,urls),10000)
         }
         );
 
