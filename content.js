@@ -27,11 +27,10 @@ window.addEventListener('load', () => {
     if(document.activeElement.toString() == '[object HTMLButtonElement]') 
         document.activeElement.blur();
     // unfocus buttons after clicking
-    // document.addEventListener('click', function(e) { 
-    //     if(document.activeElement.toString() == '[object HTMLButtonElement]')
-    //         { document.activeElement.blur(); }
-            
-    //      })
+    document.addEventListener('click', function(e) { 
+        if(document.activeElement.toString() == '[object HTMLButtonElement]')
+            { document.activeElement.blur(); }
+            })
     let video = document.getElementsByTagName('video')[0]
     if (video == undefined) throw new Error('There is no video element.\n Its OK, aborting code.')
     video.parentNode.style.display = 'flex'
@@ -40,6 +39,7 @@ window.addEventListener('load', () => {
     let buttons = document.getElementsByTagName('button')
     let play = document.getElementsByClassName('vjs-play-control')[0]
     video.parentNode.insertBefore(div,video.parentNode.firstChild);
+
 
     // chrome.storage.sync.clear();
     const locationManager = (video) => {
@@ -77,13 +77,17 @@ window.addEventListener('load', () => {
                 chrome.storage.sync.set({urls: urls});
                 setTimeout(()=> save(dataIndex,urls),10000);
             }
-            document.addEventListener('click',()=> {
-                console.log('saved by click');
+            
+            // $("body").on("click", "vjs-chapter-markers-bar", ()=> console.log("hello"));
+
+            video.addEventListener('seeked',()=> {
+                console.log('seeked');
                 urls[dataIndex][1] = video.currentTime;
                 chrome.storage.sync.set({urls: urls});  
                 if(document.activeElement.toString() == '[object HTMLButtonElement]')
                     document.activeElement.blur();
             })
+            
             setTimeout(()=>save(dataIndex,urls),10000)
         }
         );
