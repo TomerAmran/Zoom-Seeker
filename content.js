@@ -69,6 +69,37 @@ window.addEventListener('load', () => {
             }  
             console.log(`dataIndex after fix: ${dataIndex}`)
             video.currentTime = urls[dataIndex][1];    
+            
+            let newsave = ()=>{
+                chrome.storage.sync.get('urls', 
+                    (res)=>{
+                        let dataIndex;
+                        let thisUrl =location.href;
+                        let urls = res.urls; 
+                        for (let i = 0 ; i< urls.length; i++){
+                            if (urls[i][0] == thisUrl)
+                                dataIndex = i;
+                        }
+                        console.log(`dataIndex after search: ${dataIndex}`)
+                         if (dataIndex == undefined){
+                            urls = [[thisUrl,0]].concat(urls);
+                            // chrome.storage.sync.set({urls: urls});
+                            dataIndex = 0;
+                            if (urls.length > 50)
+                                urls = urls.slice(0,30);
+                        }
+                        urls[dataIndex][1] = video.currentTime;
+                        chrome.storage.sync.set({urls: urls});
+                        setTimeout(newsave,10000);
+            })
+        }
+            
+            
+            
+            
+            
+            
+            
             let save = (dataIndex,urls)=>{
                 console.log(urls);
                 console.log(dataIndex);  
@@ -88,7 +119,8 @@ window.addEventListener('load', () => {
                     document.activeElement.blur();
             })
             
-            setTimeout(()=>save(dataIndex,urls),10000)
+            // setTimeout(()=>save(dataIndex,urls),10000)
+            setTimeout(newsave,10000);
         }
         );
 
