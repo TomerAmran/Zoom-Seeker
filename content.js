@@ -162,6 +162,18 @@ window.addEventListener('load', () => {
         if (ev.keyCode === 32) { // space
             play.click()
         }
+        if (ev.keyCode === 38) { // up
+            video.volume = video.volume + 0.1
+            div.innerHTML = `${Math.round(100*video.volume)}%`
+            div = initFadeout(div)
+        
+        }
+        if (ev.keyCode === 40) { // down
+            video.volume = video.volume - 0.1
+            div.innerHTML = `${Math.round(100*video.volume)}%`
+            div = initFadeout(div)
+        }
+
     
     })    
 

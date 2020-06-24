@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Zoom Seeker - Beta",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "content_scripts": [
         {
             "matches": ["https://zoom.us/rec/play/*"
